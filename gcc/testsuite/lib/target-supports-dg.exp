@@ -205,6 +205,21 @@ proc dg-require-stack-size { args } {
     }
 }
 
+# If this target does not have sufficient global memory, skip this test.
+
+proc dg-require-memory-size { args } {
+    if { ![is-effective-target memory_size] } {
+    return
+    }
+    
+    set memory_size [dg-effective-target-value memory_size]
+    set required [expr [lindex $args 1]]
+    if { $memory_size < $required } {
+    upvar dg-do-what dg-do-what
+        set dg-do-what [list [lindex ${dg-do-what} 0] "N" "P"]
+    }
+}
+
 # If this target does not support named sections skip this test.
 
 proc dg-require-named-sections { args } {

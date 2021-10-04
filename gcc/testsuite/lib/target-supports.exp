@@ -557,6 +557,15 @@ proc check_effective_target_stack_size { } {
     return 0
 }
 
+# Return 1 if target has limited memory size.
+
+proc check_effective_target_memory_size { } {
+    if [target_info exists gcc,memory_size] {
+    return 1
+    }
+    return 0
+}
+
 # Return the value attribute of an effective target, otherwise return 0.
 
 proc dg-effective-target-value { effective_target } {
@@ -566,6 +575,11 @@ proc dg-effective-target-value { effective_target } {
 	}
     }
 
+    if { "$effective_target" == "memory_size" } {
+    if [check_effective_target_memory_size] {
+        return [target_info gcc,memory_size]
+    }
+    }
     return 0
 }
 
