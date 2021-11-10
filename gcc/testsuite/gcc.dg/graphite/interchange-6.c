@@ -1,5 +1,4 @@
 /* { dg-require-effective-target size32plus } */
-/* { dg-require-stack-size "4*100*200" { target {ilp32 | lp64 | llp64} } } */
 
 /* Formerly known as ltrans-6.c */
 

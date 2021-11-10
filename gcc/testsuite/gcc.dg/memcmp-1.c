@@ -3,8 +3,6 @@
 /* { dg-options "-O2" } */
 /* { dg-require-effective-target ptr32plus } */
 /* { dg-timeout-factor 2 } */
-/* { dg-require-stack-size "2*(600*2+16)+(8192*4)" { target {ilp32 | lp64 | llp64} } } */
-
 
 #include <stdio.h>
 #include <stdlib.h>

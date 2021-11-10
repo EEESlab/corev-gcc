@@ -1,5 +1,4 @@
 /* { dg-require-effective-target size32plus } */
-/* { dg-require-stack-size "2*4*100*100" { target {ilp32 | lp64 | llp64} } } */
 
 #define DEBUG 0
 #if DEBUG
