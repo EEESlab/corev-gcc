@@ -1,0 +1,26 @@
+name: COREV-GCC CI
+on: [push,pull_request]
+jobs:
+  Regression-Tests:
+    name: Regression Tests
+    runs-on: self-hosted
+    timeout-minutes: 5000
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Source GVSoC
+        run: |
+          cd ${{ github.workspace }}
+          cd /home/nbruschi/Documents/pulp/baseline/gvsoc/
+          export PULP_RISCV_GCC_TOOLCHAIN=/home/nbruschi/Documents/openhwgroup_pulp_project/baseline/toolchain-install
+          source ./sourceme.sh
+          cd ${{ github.workspace }}
+          export -p > temp_env
+      - name: Launch regression tests
+        run: |
+          cd ${{ github.workspace }}
+          source temp_env
+          cd /home/nbruschi/Documents/openhwgroup_pulp_project/baseline/build-corev-gcc/corev-gcc-stage2/
+          make check-gcc RUNTESTFLAGS="riscv.exp --target_board=riscv-gvsoc" > regression_log.txt
+          cd ${{ github.workspace }}
+
