@@ -1,17 +1,17 @@
 /* Simple test for COREV store post-increment MEM extensions */
 /* { dg-do run { target { riscv32-corev-elf } } } */
-/* { dg-options "-march=rv32i_xcorevmem1p0 -O1 -std=gnu11 --save-temps" } */
+/* { dg-options "-march=rv32i_xcorevmem1p0 -O1 --save-temps" } */
 
 #include <stdlib.h>
 
 #define ARRAY_DIM (20) /* ARRAY_DIM = 20 to avoid loop unrolling */
 
-signed char        char_array     [ARRAY_DIM];
-signed short int   short_array    [ARRAY_DIM];
-signed int         int_array      [ARRAY_DIM];
-unsigned char      uns_char_array [ARRAY_DIM];
-unsigned short int uns_short_array[ARRAY_DIM];
-unsigned int       uns_int_array  [ARRAY_DIM];
+signed char        array_0 [ARRAY_DIM];
+signed short int   array_1 [ARRAY_DIM];
+signed int         array_2 [ARRAY_DIM];
+unsigned char      array_3 [ARRAY_DIM];
+unsigned short int array_4 [ARRAY_DIM];
+unsigned int       array_5 [ARRAY_DIM];
 
 void store_postinc(void)
 {
@@ -21,12 +21,12 @@ void store_postinc(void)
   /* { dg-final { scan-assembler-times "cv\.sw .\\d+, 4\\(.\\d+!\\)" 2 } } */
   for(int i=0; i<ARRAY_DIM; i++)
   {
-    char_array[i]      = sizeof(signed char)       +i;
-    short_array[i]     = sizeof(signed short int)  +i;
-    int_array[i]       = sizeof(signed int)        +i;
-    uns_char_array[i]  = sizeof(unsigned char)     +i;
-    uns_short_array[i] = sizeof(unsigned short int)+i;
-    uns_int_array[i]   = sizeof(unsigned int)      +i;
+     array_0[i] =  sizeof(signed char)       ;
+     array_1[i] =  sizeof(signed short int)  ;
+     array_2[i] =  sizeof(signed int)        ;
+     array_3[i] =  sizeof(unsigned char)     ;
+     array_4[i] =  sizeof(unsigned short int);
+     array_5[i] =  sizeof(unsigned int)      ;
   }
 }
 
@@ -36,12 +36,12 @@ int main(void)
 
   for(int i=0; i<ARRAY_DIM; i++)
   {
-    if((char_array[i]        != (sizeof(signed char)       +i))
-      || (short_array[i]     != (sizeof(signed short int)  +i))
-      || (int_array[i]       != (sizeof(signed int)        +i))
-      || (uns_char_array[i]  != (sizeof(unsigned char)     +i))
-      || (uns_short_array[i] != (sizeof(unsigned short int)+i))
-      || (uns_int_array[i]   != (sizeof(unsigned int)      +i)))
+    if(  (array_0[i] != (sizeof(signed char)       ))
+      || (array_1[i] != (sizeof(signed short int)  ))
+      || (array_2[i] != (sizeof(signed int)        ))
+      || (array_3[i] != (sizeof(unsigned char)     ))
+      || (array_4[i] != (sizeof(unsigned short int)))
+      || (array_5[i] != (sizeof(unsigned int)      )))
     {
       abort();
     }

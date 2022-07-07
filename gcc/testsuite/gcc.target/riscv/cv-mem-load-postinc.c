@@ -1,6 +1,7 @@
 /* Simple test for COREV load post-increment MEM extensions */
 /* { dg-do run { target { riscv32-corev-elf } } } */
-/* { dg-options "-march=rv32i_xcorevmem1p0 -O1 -std=gnu11 --save-temps" } */
+/* { dg-options "-march=rv32i_xcorevmem1p0 -O1 --save-temps" } */
+/* { dg-timeout 10 } */
 
 #include <stdlib.h>
 
@@ -58,12 +59,12 @@ int main(void)
 
   load_postinc();
 
-  if((char_sum        != sizeof(signed char)*ARRAY_DIM)
-    || (short_sum     != sizeof(signed short int)*ARRAY_DIM)
-    || (int_sum       != sizeof(signed int)*ARRAY_DIM)
-    || (uns_char_sum  != sizeof(unsigned char)*ARRAY_DIM)
-    || (uns_short_sum != sizeof(unsigned short int)*ARRAY_DIM)
-    || (uns_int_sum   != sizeof(unsigned int)*ARRAY_DIM))
+  if((char_sum        != sizeof(signed char)        * ARRAY_DIM)
+    || (short_sum     != sizeof(signed short int)   * ARRAY_DIM)
+    || (int_sum       != sizeof(signed int)         * ARRAY_DIM)
+    || (uns_char_sum  != sizeof(unsigned char)      * ARRAY_DIM)
+    || (uns_short_sum != sizeof(unsigned short int) * ARRAY_DIM)
+    || (uns_int_sum   != sizeof(unsigned int)       * ARRAY_DIM))
   {
     abort();
   }

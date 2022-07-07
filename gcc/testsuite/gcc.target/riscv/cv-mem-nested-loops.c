@@ -1,6 +1,6 @@
 /* Test for COREV MEM extensions with nested loops */
 /* { dg-do run { target { riscv32-corev-elf } } } */
-/* { dg-options "-march=rv32i_xcorevmem1p0 -O1 -std=gnu11 --save-temps" } */
+/* { dg-options "-march=rv32im_xcorevmem1p0 -O1 --save-temps" } */
 
 #include <stdlib.h>
 
