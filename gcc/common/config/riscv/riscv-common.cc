@@ -50,6 +50,7 @@ static const riscv_implied_info_t riscv_implied_info[] =
   {"d", "f"},
   {"f", "zicsr"},
   {"d", "zicsr"},
+  {"xcorev", "xcorevmem"},
   {"zk", "zkn"},
   {"zk", "zkr"},
   {"zk", "zkt"},
@@ -188,6 +189,8 @@ static const struct riscv_ext_version riscv_ext_version_table[] =
   {"zvl16384b", ISA_SPEC_CLASS_NONE, 1, 0},
   {"zvl32768b", ISA_SPEC_CLASS_NONE, 1, 0},
   {"zvl65536b", ISA_SPEC_CLASS_NONE, 1, 0},
+
+  {"xcorevmem", ISA_SPEC_CLASS_NONE, 1, 0},
 
   /* Terminate the list.  */
   {NULL, ISA_SPEC_CLASS_NONE, 0, 0}
@@ -1089,6 +1092,7 @@ static const riscv_ext_flag_table_t riscv_ext_flag_table[] =
   {"f", &gcc_options::x_target_flags, MASK_HARD_FLOAT},
   {"d", &gcc_options::x_target_flags, MASK_DOUBLE_FLOAT},
   {"c", &gcc_options::x_target_flags, MASK_RVC},
+  {"xcorevmem", &gcc_options::x_corev_mem_ext, MASK_COREV_MEM},
   {"v", &gcc_options::x_target_flags, MASK_VECTOR},
 
   {"zicsr",    &gcc_options::x_riscv_zi_subext, MASK_ZICSR},
