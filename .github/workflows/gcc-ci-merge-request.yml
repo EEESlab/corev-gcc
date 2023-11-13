@@ -1,0 +1,62 @@
+name: GCC MR CI
+on: pull_request
+jobs:
+  Regression-Tests:
+    name: Regression Tests
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - run: echo "The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "The workflow is now ready to test your code on the runner."
+      - name: Build Toolchain
+        run: |
+          cd ${{ github.workspace }}
+          cd ..
+          git clone https://github.com/EEESlab/corev-binutils-gdb.git
+          git clone https://github.com/riscv/riscv-newlib.git
+          git clone https://github.com/riscvarchive/riscv-dejagnu.git
+          sudo apt-get update -y
+          sudo apt-get install -y expect
+          sudo apt-get install -y libgmp10
+          sudo apt-get install -y libgmp-dev
+          sudo apt-get install -y libmpfr6
+          sudo apt-get install -y libmpfr-dev
+          cd riscv-dejagnu
+          ./configure
+          aclocal
+          automake
+          sudo make all install
+          cd ${{ github.workspace }}
+          source build-corev-gcc-tools.sh --all
+          cd ${{ github.workspace }}
+          export -p > temp_env
+      - name: Launch GCC Regression Tests
+        run: |
+          cd ${{ github.workspace }}
+          source temp_env
+          cd ${BUILD_STAGE2_PREFIX}
+          make check-gcc RUNTESTFLAGS="riscv.exp --target_board=riscv-sim" > ${{ github.workspace }}/regression_report.txt
+          cd ${{ github.workspace }}
+          export -p > temp_env
+      - name: Read GCC Regression Report
+        run: |
+          cd ${{ github.workspace }}
+          source temp_env
+          echo "Reading regression report from $(pwd) folder"
+          cat regression_report.txt
+          cd ${{ github.workspace }}
+          export -p > temp_env
+      - name: Upload GCC Regression Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: regression_report
+          path: regression_report.txt
+      - name: Exit from GCC CI
+        run: |
+          echo "This job's status is ${{ job.status }}."
+          if grep -q "unexpected failures" ${{ github.workspace }}/regression_report.txt; then exit 1; fi
+          if grep -q "unexpected passes" ${{ github.workspace }}/regression_report.txt; then exit 1; fi
